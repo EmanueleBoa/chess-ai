@@ -1,1 +1,1 @@
-# chess-bot
+# chess-ai
