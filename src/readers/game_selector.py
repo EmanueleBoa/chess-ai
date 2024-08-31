@@ -4,8 +4,8 @@ from chess.pgn import Headers, Game
 
 
 class GameSelector:
-    def __init__(self, time_format: Optional[str], target_elo: Optional[int],
-                 elo_range: Optional[int] = 100, minimum_moves: Optional[int] = 0):
+    def __init__(self, time_format: Optional[str] = None, target_elo: Optional[int] = None,
+                 elo_range: int = 100, minimum_moves: int = 0):
         self.time_format = time_format
         self.target_elo = target_elo
         self.elo_range = elo_range

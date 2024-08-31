@@ -8,7 +8,7 @@ from src.readers.game_selector import GameSelector
 
 
 class StandardPGNReader(BaseReader):
-    def __init__(self, file_name: str, game_selector: GameSelector):
+    def __init__(self, file_name: str, game_selector: GameSelector = GameSelector()):
         self.file = open(file_name, 'r')
         self.selector = game_selector
 
