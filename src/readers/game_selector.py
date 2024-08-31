@@ -13,23 +13,23 @@ class GameSelector:
 
     def select_game(self, game: Game) -> bool:
         headers = game.headers
-        return self.is_right_time_format(headers) and self.are_both_players_right_elo_range(
-            headers) and self.is_long_enough(game)
+        return self._is_right_time_format(headers) and self._are_both_players_right_elo_range(
+            headers) and self._is_long_enough(game)
 
-    def are_both_players_right_elo_range(self, headers: Headers) -> bool:
+    def _are_both_players_right_elo_range(self, headers: Headers) -> bool:
         if self.target_elo is None:
             return True
         white_elo = int(headers.get("WhiteElo", -1))
         black_elo = int(headers.get("BlackElo", -1))
-        return self.is_right_elo_range(white_elo) and self.is_right_elo_range(black_elo)
+        return self._is_right_elo_range(white_elo) and self._is_right_elo_range(black_elo)
 
-    def is_right_time_format(self, headers: Headers) -> bool:
+    def _is_right_time_format(self, headers: Headers) -> bool:
         if self.time_format is None:
             return True
         return self.time_format in headers.get("Event")
 
-    def is_right_elo_range(self, elo: int) -> bool:
+    def _is_right_elo_range(self, elo: int) -> bool:
         return self.target_elo <= elo < self.target_elo + self.elo_range
 
-    def is_long_enough(self, game: Game):
+    def _is_long_enough(self, game: Game):
         return len(list(game.mainline())) >= self.minimum_moves
