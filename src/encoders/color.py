@@ -1,8 +1,14 @@
-EMPTY_SQUARE = 'o'
+import numpy as np
+
 PIECES = 'PNBRQK'
 CASTLING_SIDES = 'KQ'
 WHITE = 'w'
-BLACK = 'b'
+
+
+class ColorEncoder:
+    @staticmethod
+    def encode(color: str) -> np.ndarray:
+        return np.ones((1, 8, 8), dtype=int) * (color == WHITE)
 
 
 class ColorPerspective:
