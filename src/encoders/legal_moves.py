@@ -18,13 +18,12 @@ class LegalMovesEncoder:
         color = FenProcessor().get_color(fen)
         encoded_starting_board = BoardEncoder().encode(fen)
         if self.history_encoder.is_history_needed():
-            perspective = ColorPerspective(color)
-            encoded_history = self.history_encoder.encode(history, perspective)
+            encoded_history = self.history_encoder.encode(history, color)
             encoded_starting_board = np.concatenate((encoded_history, encoded_starting_board), axis=0)
         final_boards_fen = self._get_next_possible_board_fens(fen)
         encoded_moves = []
         for final_fen in final_boards_fen:
-            encoded_final_board = BoardEncoder().encode(final_fen, color_perspective=color)
+            encoded_final_board = BoardEncoder().encode(final_fen, color=color)
             encoded_mate_terminations = MateEncoder().encode(final_fen)
             encoded_move = np.concatenate(
                 (encoded_starting_board, encoded_final_board, encoded_mate_terminations), axis=0)

@@ -10,7 +10,8 @@ class HistoryEncoder:
     def __init__(self, history_size: int):
         self.history_size = history_size
 
-    def encode(self, past_fens: List[str], perspective: ColorPerspective) -> np.ndarray:
+    def encode(self, past_fens: List[str], color: str) -> np.ndarray:
+        perspective = ColorPerspective(color)
         encoded_past_boards = []
         for fen in past_fens:
             encoded_past_boards += list(PiecesEncoder().encode(fen, perspective))

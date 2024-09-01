@@ -7,13 +7,13 @@ from src.processors import FenProcessor
 
 
 class BoardEncoder:
-    def encode(self, fen: str, color_perspective: str = None) -> np.ndarray:
-        color = FenProcessor().get_color(fen) if color_perspective is None else color_perspective
-        perspective = ColorPerspective(color)
+    def encode(self, fen: str, color: str = None) -> np.ndarray:
+        color_ = FenProcessor().get_color(fen) if color is None else color
+        perspective = ColorPerspective(color_)
         encoded_pieces = PiecesEncoder().encode(fen, perspective)
         encoded_castling_rights = CastlingRightsEncoder().encode(fen, perspective.castling_sides)
         encoded_opponent_castling_rights = CastlingRightsEncoder().encode(fen, perspective.opponent_castling_sides)
-        encoded_color = ColorEncoder().encode(color)
+        encoded_color = ColorEncoder().encode(color_)
         encoded_board = np.concatenate(
             (encoded_pieces, encoded_castling_rights, encoded_opponent_castling_rights, encoded_color), axis=0)
         if perspective.should_flip_board:
