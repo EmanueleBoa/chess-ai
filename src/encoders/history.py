@@ -20,3 +20,6 @@ class HistoryEncoder:
             empty_history = np.zeros((missing_boards * 12, 8, 8), dtype=int)
             return np.concatenate((empty_history, encoded_past_boards), axis=0)
         return encoded_past_boards
+
+    def is_history_needed(self) -> bool:
+        return self.history_size > 0
