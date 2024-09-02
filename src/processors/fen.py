@@ -17,3 +17,7 @@ class FenProcessor:
         for number, replacement in zip(numbers, replacements):
             processed_board = processed_board.replace(number, replacement)
         return processed_board
+
+    @staticmethod
+    def remove_board_from_fen(fen: str) -> str:
+        return ''.join(fen.split(' ')[2:])

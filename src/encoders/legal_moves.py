@@ -5,7 +5,7 @@ import numpy as np
 
 from src.encoders import BoardEncoder
 from src.encoders.history import HistoryEncoder
-from src.encoders.mate import MateEncoder
+from src.encoders.mates import MatesEncoder
 from src.processors import FenProcessor
 
 
@@ -23,7 +23,7 @@ class LegalMovesEncoder:
         encoded_moves = []
         for final_fen in final_boards_fens:
             encoded_final_board = BoardEncoder().encode(final_fen, color=color)
-            encoded_mate_terminations = MateEncoder().encode(final_fen)
+            encoded_mate_terminations = MatesEncoder().encode(final_fen)
             encoded_move = np.concatenate(
                 (encoded_starting_board, encoded_final_board, encoded_mate_terminations), axis=0)
             encoded_moves.append(encoded_move)
@@ -38,8 +38,3 @@ class LegalMovesEncoder:
             final_board.push(move)
             final_boards_fens.append(final_board.fen())
         return final_boards_fens
-
-    @staticmethod
-    def _get_legal_moves_uci(fen: str) -> List[str]:
-        board = chess.Board(fen=fen)
-        return [move.uci() for move in board.legal_moves]

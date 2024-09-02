@@ -2,7 +2,7 @@ import chess
 import numpy as np
 
 
-class MateEncoder:
+class MatesEncoder:
     def encode(self, fen: str) -> np.ndarray:
         is_checkmate = self._encode_is_chekmate(fen)
         is_stalemate = self._encode_is_stalemate(fen)
