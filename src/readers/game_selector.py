@@ -11,7 +11,7 @@ class GameSelector:
         self.elo_range = elo_range
         self.minimum_moves = minimum_moves
 
-    def select_game(self, game: Game) -> bool:
+    def select(self, game: Game) -> bool:
         headers = game.headers
         return self._is_right_time_format(headers) and self._are_both_players_right_elo_range(
             headers) and self._is_long_enough(game)

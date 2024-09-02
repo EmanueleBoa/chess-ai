@@ -7,7 +7,7 @@ from src.readers.base import BaseReader
 from src.readers.game_selector import GameSelector
 
 
-class StandardPGNReader(BaseReader):
+class PGNReader(BaseReader):
     def __init__(self, file_name: str, game_selector: GameSelector = GameSelector()):
         self.file = open(file_name, 'r')
         self.selector = game_selector
@@ -18,6 +18,6 @@ class StandardPGNReader(BaseReader):
             game = chess.pgn.read_game(self.file)
             if game is None:
                 break
-            if self.selector.select_game(game):
+            if self.selector.select(game):
                 games.append(game)
         return games

@@ -37,7 +37,7 @@ class CompressedPGNReader(BaseReader):
             for offset in offsets[:-1]:
                 pgn.seek(offset)
                 game = chess.pgn.read_game(pgn)
-                if self.selector.select_game(game):
+                if self.selector.select(game):
                     games.append(game)
             self.string_leftovers = string[offsets[-1]:]
         return games
