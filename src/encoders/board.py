@@ -13,9 +13,11 @@ class BoardEncoder:
         encoded_pieces = PiecesEncoder().encode(fen, perspective)
         encoded_castling_rights = CastlingRightsEncoder().encode(fen, perspective.castling_sides)
         encoded_opponent_castling_rights = CastlingRightsEncoder().encode(fen, perspective.opponent_castling_sides)
-        encoded_color = ColorEncoder().encode(color_)
         encoded_board = np.concatenate(
-            (encoded_pieces, encoded_castling_rights, encoded_opponent_castling_rights, encoded_color), axis=0)
+            (encoded_pieces, encoded_castling_rights, encoded_opponent_castling_rights), axis=0)
+        if color is not None:
+            encoded_color = ColorEncoder().encode(color_)
+            encoded_board = np.concatenate((encoded_board, encoded_color), axis=0)
         if perspective.should_flip_board:
             return self._flip_encoded_board(encoded_board)
         return encoded_board

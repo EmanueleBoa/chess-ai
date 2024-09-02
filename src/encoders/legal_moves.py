@@ -3,7 +3,7 @@ from typing import List
 import chess
 import numpy as np
 
-from src.encoders import BoardEncoder
+from src.encoders.board import BoardEncoder
 from src.encoders.history import HistoryEncoder
 from src.encoders.mates import MatesEncoder
 from src.processors import FenProcessor
