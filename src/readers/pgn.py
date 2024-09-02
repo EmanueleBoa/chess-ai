@@ -12,7 +12,7 @@ class PGNReader(BaseReader):
         self.file = open(file_name, 'r')
         self.selector = game_selector
 
-    def read_games(self, max_games: Optional[int]) -> List[Game]:
+    def read_games(self, max_games: Optional[int] = None) -> List[Game]:
         games = []
         while self._should_keep_reading(len(games), max_games):
             game = chess.pgn.read_game(self.file)

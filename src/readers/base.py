@@ -2,7 +2,7 @@ from typing import Optional
 
 
 class BaseReader:
-    def read_games(self, max_games: Optional[int]):
+    def read_games(self, max_games: Optional[int] = None):
         raise NotImplementedError('Subclasses should implement this method')
 
     @staticmethod

@@ -19,7 +19,7 @@ class CompressedPGNReader(BaseReader):
         self.string_leftovers = ''
         self.chunk = None
 
-    def read_games(self, max_games: Optional[int]) -> List[Game]:
+    def read_games(self, max_games: Optional[int] = None) -> List[Game]:
         games = []
         while self._should_keep_reading(len(games), max_games):
             self.chunk = self.reader.read(self.chunk_size)
