@@ -19,6 +19,8 @@ class HistoryEncoder:
         if len(past_fens) < self.history_size:
             missing_boards = self.history_size - len(past_fens)
             empty_history = np.zeros((missing_boards * 12, 8, 8), dtype=int)
+            if len(past_fens) == 0:
+                return empty_history
             return np.concatenate((empty_history, encoded_past_boards), axis=0)
         return encoded_past_boards
 
