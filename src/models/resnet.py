@@ -23,12 +23,12 @@ class ResNet(nn.Module):
     @classmethod
     def init_standard(cls, history_size: int = 0):
         input_planes = MOVE_PLANES + history_size * HISTORICAL_BOARD_PLANES
-        cls(input_planes, RESIDUAL_BLOCKS, CHANNELS)
+        return cls(input_planes, RESIDUAL_BLOCKS, CHANNELS)
 
     @classmethod
     def init_mini(cls, history_size: int = 0):
         input_planes = MOVE_PLANES + history_size * HISTORICAL_BOARD_PLANES
-        cls(input_planes, int(RESIDUAL_BLOCKS / 2), int(CHANNELS / 2))
+        return cls(input_planes, int(RESIDUAL_BLOCKS / 2), int(CHANNELS / 2))
 
     def forward(self, x):
         out = self.conv(x)
@@ -37,9 +37,8 @@ class ResNet(nn.Module):
         out = self.out_block(out)
         return out
 
-    def predict(self, x: np.np.ndarray) -> np.ndarray:
-        x = get_variable_from_np_array(x)
-        out = self.forward(x)
+    def predict(self, x: np.ndarray) -> np.ndarray:
+        out = self.forward(get_variable_from_np_array(x))
         out = out.cpu().detach().numpy().squeeze()
         return out
 
