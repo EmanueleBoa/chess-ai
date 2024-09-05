@@ -4,7 +4,7 @@ from torch.utils.data import Dataset
 from src.models.utils import get_variable_from_np_array
 
 
-class ChessDataSet(Dataset):
+class ChessDataset(Dataset):
     def __init__(self, move, target):
         self.move = move
         self.target = target

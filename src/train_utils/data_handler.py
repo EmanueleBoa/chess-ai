@@ -15,7 +15,7 @@ class DataHandler:
     def get_encoded_games_batch(self, n_games: int, target_player: Optional[str] = None,
                                 min_clock_seconds: Optional[float] = None,
                                 random_state: Optional[int] = None) -> Tuple[np.ndarray, np.ndarray]:
-        df_batch = self._get_games_batch(n_games, target_player, min_clock_seconds, random_state)
+        df_batch = self.get_games_batch(n_games, target_player, min_clock_seconds, random_state)
         input_encoder = LegalMovesEncoder(history_size=self.history_size)
         output_encoder = TargetMoveEncoder()
         X = []
@@ -29,10 +29,13 @@ class DataHandler:
         y = np.array(y)
         return X, y
 
-    def _get_games_batch(self, n_games: int, target_player: Optional[str] = None,
-                         min_clock_seconds: Optional[float] = None,
-                         random_state: Optional[int] = None) -> pd.DataFrame:
-        games = self.df_games.game_id.sample(n=n_games, random_state=random_state)
+    def get_games_batch(self, n_games: Optional[int], target_player: Optional[str] = None,
+                        min_clock_seconds: Optional[float] = None,
+                        random_state: Optional[int] = None) -> pd.DataFrame:
+        if n_games is None:
+            games = self.df_games.game_id.sample(n=len(self.df_games))
+        else:
+            games = self.df_games.game_id.sample(n=n_games, random_state=random_state)
         df_batch = self.df_states[self.df_states.game_id.isin(games)].copy()
         if target_player is not None:
             df_batch = df_batch[df_batch.player == target_player].copy()
