@@ -8,7 +8,7 @@ from src.train_utils import DataHandler, Trainer
 
 MODEL_WEIGHTS_DIR = 'model_weights'
 CHECKPOINT_DIR = 'checkpoints'
-TRAIN_FILE = 'data/processed/lichess_Chess-Network_2023.csv'
+TRAIN_FILE = 'data/processed/lichess_Chess-Network_2022.csv'
 TARGET_PLAYER = 'Chess-Network'
 HISTORY_SIZE = 12
 MIN_CLOCK_SECONDS = 15.
@@ -36,6 +36,7 @@ if __name__ == "__main__":
         optimizer.load_state_dict(checkpoint['optimizer_state_dict'])
         starting_epoch = checkpoint['epoch']
         print(f'Model and optimizer initialized from {checkpoint_path}')
+        del checkpoint
 
     data_handler = DataHandler(df_states=df_states_train, df_games=df_games_train, history_size=HISTORY_SIZE)
     trainer = Trainer(batch_size=BATCH_SIZE)
@@ -45,6 +46,7 @@ if __name__ == "__main__":
                                                           min_clock_seconds=MIN_CLOCK_SECONDS)
         loss = trainer.train_iteration(model, optimizer, train_data)
         print("Epoch = %5d, train loss = %5.3e" % (epoch + 1, loss))
+        del train_data
 
         if (epoch + 1) % CHECKPOINT_EPOCHS == 0:
             torch.save({
