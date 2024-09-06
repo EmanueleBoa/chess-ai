@@ -10,7 +10,7 @@ MODEL_WEIGHTS_DIR = 'model_weights'
 CHECKPOINT_DIR = 'checkpoints'
 TRAIN_FILE = 'data/processed/lichess_Chess-Network_2023.csv'
 TARGET_PLAYER = 'Chess-Network'
-HISTORY_SIZE = 0
+HISTORY_SIZE = 12
 MIN_CLOCK_SECONDS = 15.
 N_GAMES_BATCH = 10
 
@@ -19,7 +19,6 @@ WEIGHT_DECAY = 0.00001
 BATCH_SIZE = 1024
 N_EPOCHS = 100
 CHECKPOINT_EPOCHS = 10
-
 
 if __name__ == "__main__":
     df_states_train = pd.read_csv(TRAIN_FILE).sort_values(by=['game_id', 'ply']).reset_index(drop=True)
@@ -32,7 +31,7 @@ if __name__ == "__main__":
     checkpoint_path = f"./{CHECKPOINT_DIR}/{model_file_name}"
     starting_epoch = 0
     if model_file_name in os.listdir(CHECKPOINT_DIR):
-        checkpoint = torch.load(checkpoint_path)
+        checkpoint = torch.load(checkpoint_path, weights_only=True)
         model.load_state_dict(checkpoint['model_state_dict'])
         optimizer.load_state_dict(checkpoint['optimizer_state_dict'])
         starting_epoch = checkpoint['epoch']
@@ -42,9 +41,9 @@ if __name__ == "__main__":
     trainer = Trainer(batch_size=BATCH_SIZE)
 
     for epoch in range(starting_epoch, starting_epoch + N_EPOCHS):
-        X, y = data_handler.get_encoded_games_batch(n_games=N_GAMES_BATCH, target_player=TARGET_PLAYER,
-                                                    min_clock_seconds=MIN_CLOCK_SECONDS)
-        loss = trainer.train_iteration(model, optimizer, X, y)
+        train_data = data_handler.get_encoded_games_batch(n_games=N_GAMES_BATCH, target_player=TARGET_PLAYER,
+                                                          min_clock_seconds=MIN_CLOCK_SECONDS)
+        loss = trainer.train_iteration(model, optimizer, train_data)
         print("Epoch = %5d, train loss = %5.3e" % (epoch + 1, loss))
 
         if (epoch + 1) % CHECKPOINT_EPOCHS == 0:

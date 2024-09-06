@@ -14,8 +14,7 @@ class Trainer:
         self.batch_size = batch_size
         self.loss_function = nn.BCELoss()
 
-    def train_iteration(self, model: ResNet, optimizer: Adam, X: np.ndarray, y: np.ndarray) -> float:
-        train_data = ChessDataset.from_numpy(X, y)
+    def train_iteration(self, model: ResNet, optimizer: Adam, train_data: ChessDataset) -> float:
         train_loader = DataLoader(train_data, batch_size=self.batch_size, shuffle=False, drop_last=True)
         model.train()
         running_loss = 0

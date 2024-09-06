@@ -1,9 +1,10 @@
-from typing import List, Optional, Tuple
+from typing import List, Optional
 
 import numpy as np
 import pandas as pd
 
 from src.encoders import LegalMovesEncoder, TargetMoveEncoder
+from src.train_utils import ChessDataset
 
 
 class DataHandler:
@@ -13,9 +14,11 @@ class DataHandler:
         self.history_size = history_size
 
     def get_encoded_games_batch(self, n_games: int, target_player: Optional[str] = None,
-                                min_clock_seconds: Optional[float] = None,
-                                random_state: Optional[int] = None) -> Tuple[np.ndarray, np.ndarray]:
+                                min_clock_seconds: Optional[float] = None, random_state: Optional[int] = None,
+                                shuffle: Optional[bool] = True) -> ChessDataset:
         df_batch = self.get_games_batch(n_games, target_player, min_clock_seconds, random_state)
+        if shuffle:
+            df_batch = df_batch.sample(frac=1)
         input_encoder = LegalMovesEncoder(history_size=self.history_size)
         output_encoder = TargetMoveEncoder()
         X = []
@@ -27,7 +30,7 @@ class DataHandler:
             y += list(target)
         X = np.array(X)
         y = np.array(y)
-        return X, y
+        return ChessDataset.from_numpy(X, y)
 
     def get_games_batch(self, n_games: Optional[int], target_player: Optional[str] = None,
                         min_clock_seconds: Optional[float] = None,

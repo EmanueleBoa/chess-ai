@@ -43,7 +43,7 @@ class ResNet(nn.Module):
         return out
 
     def load(self, path):
-        self.load_state_dict(torch.load(path))
+        self.load_state_dict(torch.load(path, weights_only=True))
 
     def save(self, path):
         torch.save(self.state_dict(), path)
