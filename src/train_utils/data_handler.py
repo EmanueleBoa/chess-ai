@@ -50,4 +50,4 @@ class DataHandler:
 
     def _get_state_history(self, game_id: str, ply: int) -> List:
         history = self.df_games.loc[self.df_games.game_id == game_id]['fen'].to_list()[0]
-        return history[max(ply - 1 - self.history_size, 0):ply - 1]
+        return history[int(max(ply - 1 - self.history_size, 0)):int(ply - 1)]
