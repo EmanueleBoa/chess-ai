@@ -17,6 +17,7 @@ N_GAMES_BATCH = 10
 LEARNING_RATE = 0.001
 WEIGHT_DECAY = 0.00001
 BATCH_SIZE = 1024
+ACCUMULATION_STEPS = 2
 N_EPOCHS = 100
 CHECKPOINT_EPOCHS = 10
 
@@ -39,7 +40,7 @@ if __name__ == "__main__":
         del checkpoint
 
     data_handler = DataHandler(df_states=df_states_train, df_games=df_games_train, history_size=HISTORY_SIZE)
-    trainer = Trainer(batch_size=BATCH_SIZE)
+    trainer = Trainer(batch_size=BATCH_SIZE, accumulation_steps=ACCUMULATION_STEPS)
 
     for epoch in range(starting_epoch, starting_epoch + N_EPOCHS):
         train_data = data_handler.get_encoded_games_batch(n_games=N_GAMES_BATCH, target_player=TARGET_PLAYER,
