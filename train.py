@@ -25,7 +25,8 @@ if __name__ == "__main__":
     df_states_train = pd.read_csv(TRAIN_FILE).sort_values(by=['game_id', 'ply']).reset_index(drop=True)
     df_games_train = df_states_train.groupby('game_id')['fen'].apply(list).reset_index()
 
-    model = ResNet.init_standard(history_size=HISTORY_SIZE)
+    device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+    model = ResNet.init_standard(history_size=HISTORY_SIZE).to(device)
     optimizer = torch.optim.Adam(model.parameters(), lr=LEARNING_RATE, weight_decay=WEIGHT_DECAY)
 
     model_file_name = f'resnet_{TARGET_PLAYER}_{HISTORY_SIZE}.pt'
@@ -45,7 +46,7 @@ if __name__ == "__main__":
     for epoch in range(starting_epoch, starting_epoch + N_EPOCHS):
         train_data = data_handler.get_encoded_games_batch(n_games=N_GAMES_BATCH, target_player=TARGET_PLAYER,
                                                           min_clock_seconds=MIN_CLOCK_SECONDS)
-        loss = trainer.train_iteration(model, optimizer, train_data)
+        loss = trainer.train_iteration(model, optimizer, train_data, device)
         print("Epoch = %5d, train loss = %5.3e" % (epoch + 1, loss))
         del train_data
 
