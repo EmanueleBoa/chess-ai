@@ -10,7 +10,7 @@ from src.readers.game_selector import GameSelector
 
 
 class CompressedPGNReader(BaseReader):
-    def __init__(self, file_name: str, game_selector: GameSelector = GameSelector, chunk_size: int = 16384):
+    def __init__(self, file_name: str, game_selector: GameSelector = GameSelector(), chunk_size: int = 16384):
         self.file = open(file_name, 'rb')
         self.selector = game_selector
         self.decompressor = zstandard.ZstdDecompressor()
