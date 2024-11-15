@@ -1,3 +1,4 @@
+from dataclasses import dataclass, asdict
 from typing import List
 
 from chess.pgn import Game
@@ -25,7 +26,7 @@ class GameProcessor:
             clock = node.clock()
             player = self._get_player_to_move(fen, white_player, black_player)
             move_played = node.move.uci()
-            state = self._build_state_dict(game_id, fen, ply, clock, player, move_played, result)
+            state = GameState(game_id, fen, ply, clock, player, move_played, result).to_dict()
             states.append(state)
         return states
 
@@ -52,15 +53,15 @@ class GameProcessor:
             return white_player
         return black_player
 
-    @staticmethod
-    def _build_state_dict(game_id: str, fen: str, ply: int, clock: float, player: str, move_played: str,
-                          result: str) -> dict:
-        return {
-            'game_id': game_id,
-            'fen': fen,
-            'ply': ply,
-            'clock': clock,
-            'player': player,
-            'move_played': move_played,
-            'result': result
-        }
+@dataclass
+class GameState:
+    game_id: str
+    fen: str
+    ply: int
+    clock: float
+    player: str
+    move_played: str
+    result: str
+
+    def to_dict(self) -> dict:
+        return asdict(self)
