@@ -4,7 +4,7 @@ import pandas as pd
 import torch
 
 from src.models import ResNet
-from src.models.utils import get_device
+from src.models.utils import get_available_device
 from src.train_utils import DataHandler, Trainer
 
 MODEL_WEIGHTS_DIR = 'model_weights'
@@ -25,7 +25,7 @@ CHECKPOINT_EPOCHS = 10
 if __name__ == "__main__":
     df_states_train = pd.read_csv(TRAIN_FILE)
 
-    device = get_device()
+    device = get_available_device()
     model = ResNet.init_standard(history_size=HISTORY_SIZE).to(device)
     optimizer = torch.optim.Adam(model.parameters(), lr=LEARNING_RATE, weight_decay=WEIGHT_DECAY)
 
