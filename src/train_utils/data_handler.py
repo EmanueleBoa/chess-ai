@@ -8,9 +8,9 @@ from src.train_utils import ChessDataset
 
 
 class DataHandler:
-    def __init__(self, df_states: pd.DataFrame, df_games: pd.DataFrame, history_size: int):
-        self.df_states = df_states
-        self.df_games = df_games
+    def __init__(self, df_states: pd.DataFrame, history_size: int):
+        self.df_states = df_states.sort_values(by=['game_id', 'ply']).reset_index(drop=True)
+        self.df_games = self.df_states.groupby('game_id')['fen'].apply(list).reset_index()
         self.history_size = history_size
 
     def get_encoded_games_batch(self, n_games: int, target_player: Optional[str] = None,

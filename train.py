@@ -22,8 +22,7 @@ N_EPOCHS = 100
 CHECKPOINT_EPOCHS = 10
 
 if __name__ == "__main__":
-    df_states_train = pd.read_csv(TRAIN_FILE).sort_values(by=['game_id', 'ply']).reset_index(drop=True)
-    df_games_train = df_states_train.groupby('game_id')['fen'].apply(list).reset_index()
+    df_states_train = pd.read_csv(TRAIN_FILE)
 
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
     model = ResNet.init_standard(history_size=HISTORY_SIZE).to(device)
@@ -40,7 +39,7 @@ if __name__ == "__main__":
         print(f'Model and optimizer initialized from {checkpoint_path}')
         del checkpoint
 
-    data_handler = DataHandler(df_states=df_states_train, df_games=df_games_train, history_size=HISTORY_SIZE)
+    data_handler = DataHandler(df_states=df_states_train, history_size=HISTORY_SIZE)
     trainer = Trainer(batch_size=BATCH_SIZE, accumulation_steps=ACCUMULATION_STEPS)
 
     for epoch in range(starting_epoch, starting_epoch + N_EPOCHS):
