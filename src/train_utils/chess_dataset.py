@@ -1,7 +1,7 @@
 import numpy as np
+import torch
+from torch.autograd import Variable
 from torch.utils.data import Dataset
-
-from src.models.utils import get_variable_from_np_array
 
 
 class ChessDataset(Dataset):
@@ -16,5 +16,8 @@ class ChessDataset(Dataset):
         return self.inputs[index], self.targets[index]
 
     @classmethod
-    def from_numpy(cls, X: np.ndarray, y: np.ndarray):
-        return cls(get_variable_from_np_array(X), get_variable_from_np_array(y))
+    def from_numpy(cls, inputs: np.ndarray, targets: np.ndarray):
+        return cls(
+            Variable(torch.Tensor(inputs)),
+            Variable(torch.Tensor(targets))
+        )

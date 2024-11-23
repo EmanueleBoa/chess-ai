@@ -3,8 +3,6 @@ import torch
 from torch import nn
 from torch.nn import functional
 
-from src.models.utils import get_variable_from_np_array
-
 MOVE_PLANES = 35
 HISTORICAL_BOARD_PLANES = 12
 RESIDUAL_BLOCKS = 6
@@ -38,7 +36,7 @@ class ResNet(nn.Module):
         return out
 
     def predict(self, x: np.ndarray) -> np.ndarray:
-        out = self.forward(get_variable_from_np_array(x))
+        out = self.forward(torch.Tensor(x))
         out = out.cpu().detach().numpy().squeeze()
         return out
 

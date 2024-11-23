@@ -2,10 +2,9 @@ from typing import Optional
 
 import torch
 from torch import nn
-from torch.optim import Adam
+from torch.optim import Optimizer
 from torch.utils.data import DataLoader
 
-from src.models import ResNet
 from src.train_utils import ChessDataset
 
 
@@ -15,7 +14,8 @@ class Trainer:
         self.accumulation_steps = accumulation_steps
         self.criterion = nn.BCELoss()
 
-    def train_iteration(self, model: ResNet, optimizer: Adam, train_data: ChessDataset, device: torch.device) -> float:
+    def train_iteration(self, model: nn.Module, optimizer: Optimizer, train_data: ChessDataset,
+                        device: torch.device) -> float:
         train_loader = DataLoader(train_data, batch_size=self.batch_size, shuffle=False, drop_last=True)
         model.train()
         running_loss = 0
