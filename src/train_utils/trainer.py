@@ -1,5 +1,3 @@
-from typing import Optional
-
 import torch
 from torch import nn
 from torch.optim import Optimizer
@@ -9,7 +7,7 @@ from src.train_utils import ChessDataset
 
 
 class Trainer:
-    def __init__(self, batch_size: Optional[int] = 1, accumulation_steps: Optional[int] = 1):
+    def __init__(self, batch_size: int = 1, accumulation_steps: int = 1):
         self.batch_size = batch_size
         self.accumulation_steps = accumulation_steps
         self.criterion = nn.BCELoss()

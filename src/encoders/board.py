@@ -1,3 +1,5 @@
+from typing import Optional
+
 import numpy as np
 
 from src.encoders.castling import CastlingRightsEncoder
@@ -7,7 +9,7 @@ from src.processors import FenProcessor
 
 
 class BoardEncoder:
-    def encode(self, fen: str, color: str = None) -> np.ndarray:
+    def encode(self, fen: str, color: Optional[str] = None) -> np.ndarray:
         color_ = FenProcessor().get_color(fen) if color is None else color
         perspective = ColorPerspective(color_)
         encoded_pieces = PiecesEncoder().encode(fen, perspective)
