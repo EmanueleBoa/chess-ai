@@ -1,5 +1,5 @@
-chess>=1.10.0
-zstandard>=0.23.0
+chess==1.10.0
+zstandard==0.23.0
 numpy==1.26.4
-pandas>=2.2.2
-torch>=2.2.2
+pandas==2.2.2
+torch==2.2.2
