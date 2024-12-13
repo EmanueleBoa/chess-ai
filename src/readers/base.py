@@ -1,9 +1,11 @@
+from abc import ABC, abstractmethod
 from typing import Optional
 
 
-class BaseReader:
+class BaseReader(ABC):
+    @abstractmethod
     def read_games(self, max_games: Optional[int] = None):
-        raise NotImplementedError('Subclasses should implement this method')
+        pass
 
     @staticmethod
     def _should_keep_reading(n_games: int, max_games: Optional[int]) -> bool:
